@@ -1,16 +1,16 @@
 # IASW — Intelligent Account Servicing Workflow
 
 An agentic AI prototype that automates the **Maker** role for core-banking
-account change requests — document verification, structured field
-extraction, confidence scoring, and human-readable review summary —
-while preserving a human **Checker** as the only authority that can
+account change requests, like document verification, structured field
+extraction, confidence scoring, and human-readable review summary.
+But we preserve a human **Checker** as the only authority that can
 commit a change to the (mocked) core banking system.
 
 The full solution design write-up lives in [`docs/solution-design.md`](docs/solution-design.md).
 
 ## The HITL constraint
 
-The hard requirement of this challenge: **the AI must never write to the
+The hard requirement of this project is: **the LLM must never write to the
 core banking system (RPS) autonomously**. Every approval is explicitly
 triggered by a human Checker.
 
@@ -94,7 +94,7 @@ job queue; this is called out in the design doc as future work.
    per-dimension scores on the left, the marriage certificate embedded
    on the right.
 5. Checker types a reason and clicks **Approve**. The single audited
-   write fires against mock RPS, the request flips to `APPROVED`, and
+   write is sent to mock RPS, the request flips to `APPROVED`, and
    the lifecycle is logged.
 
 ## Tech stack
@@ -164,7 +164,7 @@ In the browser:
 
 1. **Staff Intake** → submit with default values (`C001`, `Priya Sharma → Priya Mehta`)
    and upload `samples/marriage_certificate_priya.pdf`.
-2. Wait ~10–30s for the pipeline; observe JSON log lines streaming in the uvicorn terminal.
+2. Wait a few seconds for the pipeline; observe JSON log lines streaming in the uvicorn terminal.
 3. **Checker Review** → click **Review** on the queued request, read the AI's
    summary and per-dimension scores, see the certificate embedded on the right.
 4. Type a reason, click **✓ Approve & Write to RPS**.
@@ -172,7 +172,7 @@ In the browser:
 
 ```bash
 python -c "from app.db import SessionLocal; from app.models import Customer; s = SessionLocal(); print(s.get(Customer, 'C001').name); s.close()"
-# Expected: Priya Mehta
+# Expected: (Name Change)
 ```
 
 ## Project structure
@@ -228,18 +228,14 @@ IASW/
   separation of `app/api/rps.py` makes "what code can write to RPS?" a
   one-line audit instead of a code-walking exercise.
 
-## Known limitations (prototype scope)
+## Known limitations
 
-- Forgery detection on synthetic documents is inherently heuristic — the
-  prototype demonstrates _where_ the check plugs in and what signal it
+- Forgery detection on synthetic documents is inherently heuristic, we demonstrate _where_ the check plugs in and what signal it
   produces, not real-world fraud detection.
-- No Alembic migrations; the seed script drops and recreates. Production
-  would not.
+- No Alembic migrations; the seed script drops and recreates.
 - No retries / circuit-breakers around LLM calls. Failures fall into the
   AgentRun audit log for diagnosis.
-- No authentication on the API or UI. A production deployment would gate
-  everything behind SSO + role-based authorisation; Staff vs Checker is a
-  real RBAC distinction worth enforcing.
+- No authentication on the API or UI.
 - Only the `LEGAL_NAME` change type is implemented. The dispatch in
   `rps.commit_change` shows the extension shape for the other three
   (`ADDRESS`, `DATE_OF_BIRTH`, `CONTACT_EMAIL`).
@@ -249,6 +245,4 @@ IASW/
 ## Repository hygiene
 
 `.env` is gitignored — never commit it. `.env.example` documents the
-shape; copy it and fill in your own values. The Anthropic API key is the
-most sensitive secret in this project; if it ever leaks, rotate it at
-<https://console.anthropic.com>.
+shape; copy it and fill in your own values.
