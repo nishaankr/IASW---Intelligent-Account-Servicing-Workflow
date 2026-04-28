@@ -1,0 +1,34 @@
+# Backend
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-multipart==0.0.12         # FastAPI file uploads
+pydantic==2.9.2
+pydantic-settings==2.5.2
+
+# --- Database ---
+SQLAlchemy==2.0.35
+psycopg2-binary==2.9.9           # Postgres driver (Docker default)
+
+# --- LLM ---
+anthropic==0.39.0
+# LangGraph for agent orchestration. langchain-core ships as a transitive dep.
+# We use the Anthropic SDK directly inside nodes — LangGraph owns the graph,
+# not the LLM call shape, so we avoid the heavier LangChain wrappers.
+langgraph==0.2.50
+
+# --- UI ---
+streamlit==1.39.0
+requests==2.32.3                 # Streamlit -> FastAPI HTTP client
+
+# --- Observability ---
+structlog==24.4.0
+
+# --- Document handling (sample marriage cert generation + image prep) ---
+reportlab==4.2.5                 # synthetic certificate PDF
+pdf2image==1.17.0                # PDF -> PNG for Claude Vision
+Pillow==10.4.0
+rapidfuzz==3.10.0                # deterministic fuzzy string match for name comparison
+
+# --- Dev ---
+pytest==8.3.3
+httpx==0.27.2                    # FastAPI test client

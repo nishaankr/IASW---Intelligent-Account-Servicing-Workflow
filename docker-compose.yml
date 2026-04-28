@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: iasw-postgres
+    environment:
+      POSTGRES_USER: iasw
+      POSTGRES_PASSWORD: iasw
+      POSTGRES_DB: iasw
+    ports:
+      - "55432:5432"
+    volumes:
+      - iasw_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U iasw -d iasw"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  iasw_pgdata:
+
+# docker compose up -d ------ to run this yaml

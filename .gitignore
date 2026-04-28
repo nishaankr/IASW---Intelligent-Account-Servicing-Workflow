@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+.env.local
+*.env.*.local
+
+# Local databases (SQLite fallback)
+*.db
+*.sqlite
+*.sqlite3
+
+# Runtime artefacts — these live on disk, not in git
+filenet_storage/
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Build / dist
+dist/
+build/
+
+# Generated sample certificates (runtime artefacts)
+samples/*.pdf
+samples/*.png
