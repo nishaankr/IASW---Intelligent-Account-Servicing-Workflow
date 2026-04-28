@@ -280,4 +280,9 @@ def serve_filenet(ref: str):
         ".jpg":  "image/jpeg",
         ".jpeg": "image/jpeg",
     }.get(path.suffix.lower(), "application/octet-stream")
-    return FileResponse(path=path, media_type=media_type, filename=path.name)
+    # `inline` disposition keeps browsers from force-downloading PDFs in iframes.
+    return FileResponse(
+        path=path,
+        media_type=media_type,
+        headers={"Content-Disposition": f'inline; filename="{path.name}"'},
+    )

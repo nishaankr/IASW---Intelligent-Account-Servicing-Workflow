@@ -42,9 +42,9 @@ _SEED_CUSTOMERS = [
     ),
     Customer(
         customer_id="C004",
-        name="Nishaank S Rawat",
+        name="Pooja Singh",
         date_of_birth=datetime(1998, 9, 2),
-        email="nishaank.rawat@example.com",
+        email="pooja.rawat@example.com",
         phone="+91-9123456780",
         address="19 Park Street, Kolkata, WB 700018, India",
     ),

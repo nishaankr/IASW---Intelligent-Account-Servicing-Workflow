@@ -1,0 +1,14 @@
+# Streamlit global theme. Applies to every page automatically.
+# Soft, banking-app inspired palette: steel blue primary on a warm off-white.
+# Fine-grained styling lives in ui/_components.py.
+
+[theme]
+primaryColor = "#3D5A80"
+backgroundColor = "#F6F8FB"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#2D3748"
+font = "sans serif"
+
+[server]
+headless = true
+runOnSave = true
